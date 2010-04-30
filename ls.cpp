@@ -74,6 +74,8 @@ static void PrintDetails(const TEntry *a_poEntry)
 	unsigned Attrib, Index, Length, Bit;
 	char Date[20], Time[20], Protect[] = { 'r', 'w', 'e', 'd' };
 
+	/* Print "Dir", "Link" or the file's size as appropriate */
+
 	if (a_poEntry->IsDir())
 	{
 		PRINT_DIR;
@@ -89,10 +91,16 @@ static void PrintDetails(const TEntry *a_poEntry)
 		Length = printf("%d", a_poEntry->iSize);
 	}
 
+	/* Print a number of spaces after the entry's type or size, ensuring that we don't go into an */
+	/* infinite loop if a DivX movie is found */
+
 	for (Index = 0; Index < (11 - Length); ++Index)
 	{
 		putchar(' ');
 	}
+
+	/* Iterate through the entry's attributes and print them on the screen.  Set attributes are */
+	/* indicated by their flag being 0 and cleared ones by the flag being 1 */
 
 	Bit = 8;
 
@@ -101,8 +109,12 @@ static void PrintDetails(const TEntry *a_poEntry)
 		putchar(((a_poEntry->iAttributes & Bit) ? '-' : Protect[Attrib]));
 	}
 
+	/* Convert the entry's date and time to a string and display it */
+
 	Utils::TimeToString(Date, Time, *a_poEntry);
 	printf(" %s %s", Time, Date);
+
+	/* And finally print the name of the file itself */
 
 	PRINT_NAME;
 }
@@ -119,7 +131,6 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 	/* Assume failure */
 
-	// TODO: CAW - Proper error checking here and in BUBYFU
 	RetVal = RETURN_ERROR;
 
 	/* First off, install a ctrl-c handler */
