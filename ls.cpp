@@ -203,7 +203,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 						do
 						{
-							Char = toupper(getchar());
+							Char = (char) toupper(getchar());
 						}
 						while ((Char != 'N') && (Char != 'Y'));
 
