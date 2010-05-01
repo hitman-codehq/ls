@@ -55,9 +55,6 @@ static bool g_bBreak;					/* Set to true if when ctrl-c is hit by the user */
 static int g_iShellHeight;				/* Height of the shell window in lines */
 static char *g_apcArgs[ARGS_NUM_ARGS];	/* Array of arguments */
 
-// TODO: CAW - Sort entries by name and add switches -o:s -:d -o:n and reverse versions
-// TODO: CAW - ls nonexistentdir doesn't give an error
-
 /* Written: Saturday 04-Jul-2009 13:11 pm */
 
 void SignalHandler(int /*a_iSignal*/)
@@ -139,9 +136,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 	/* Find out the height of the shell, for use by the -p option */
 
-	//if (Utils::GetShellHeight(&g_iShellHeight)) // TODO: CAW
-	g_iShellHeight = 40;
-	if (1)
+	if (Utils::GetShellHeight(&g_iShellHeight))
 	{
 		/* Assume that no arguments have been passed in */
 
@@ -201,7 +196,18 @@ int main(int a_iArgC, char *a_ppcArgV[])
 						/* See if the user wants to continue and break out if not */
 
 						printf("More? ");
-						Char = getchar();
+
+						/* Loop around until we have the answer we want.  We do it like this as some */
+						/* implementations of getchar() return a line feed as a separate character and */
+						/* some don't */
+
+						do
+						{
+							Char = toupper(getchar());
+						}
+						while ((Char != 'N') && (Char != 'Y'));
+
+						/* If the user has chosen to discontinue then break out of the loop */
 
 						if (toupper(Char) == 'N')
 						{
@@ -232,19 +238,19 @@ int main(int a_iArgC, char *a_ppcArgV[])
 			}
 			else
 			{
-				//Utils::Error("Unable to read directory."); // TODO: CAW - Here and below
+				Utils::Error("Unable to read directory.");
 			}
 
 			Dir.Close();
 		}
 		else
 		{
-			//Utils::Error("Unable to open directory for reading.");
+			Utils::Error("Unable to open file or directory for reading.");
 		}
 	}
 	else
 	{
-		//Utils::Error("Unable to obtain window dimensions");
+		Utils::Error("Unable to obtain window dimensions");
 	}
 
 	return(RetVal);
