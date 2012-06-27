@@ -2,8 +2,8 @@
 CC = @g++
 LD = @g++
 CFLAGS = -c -Wall -Wextra -Wwrite-strings
-IFLAGS = -I/StdFuncs
-LFLAGS = -lStdFuncs -lauto
+IFLAGS = -I../StdFuncs
+LFLAGS = -lStdFuncs
 
 ifdef DEBUG
 	OBJ = Debug
@@ -13,7 +13,15 @@ else
 	CFLAGS += -O2
 endif
 
-LFLAGS += -L/StdFuncs/$(OBJ)
+UNAME = $(shell uname)
+
+ifeq ($(UNAME), AmigaOS)
+
+LFLAGS += -lauto
+
+endif
+
+LFLAGS += -L../StdFuncs/$(OBJ)
 
 EXECUTABLE = $(OBJ)/ls
 
@@ -22,7 +30,7 @@ OBJECTS = $(OBJ)/ls.o
 All: $(OBJ) $(EXECUTABLE)
 
 $(OBJ):
-	@MakeDir $(OBJ)
+	@mkdir $(OBJ)
 
 $(EXECUTABLE): $(OBJECTS)
 	@echo Linking $@...
@@ -34,4 +42,4 @@ $(OBJ)/%.o: %.cpp
 	$(CC) $(CFLAGS) $(IFLAGS) -o $(OBJ)/$*.o $<
 
 clean:
-	@Delete $(OBJ) all quiet
+	@rm -fr $(OBJ)
