@@ -3,6 +3,7 @@
 #include <Args.h>
 #include <Dir.h>
 #include <ctype.h>
+#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 
