@@ -3,7 +3,7 @@ CC = @g++
 LD = @g++
 CFLAGS = -c -Wall -Wextra -Wwrite-strings
 IFLAGS = -I../StdFuncs
-LFLAGS = -lStdFuncs
+LIBS = -lStdFuncs
 
 ifdef DEBUG
 	OBJ = Debug
@@ -32,9 +32,9 @@ All: $(OBJ) $(EXECUTABLE)
 $(OBJ):
 	@mkdir $(OBJ)
 
-$(EXECUTABLE): $(OBJECTS)
+$(EXECUTABLE): $(OBJECTS) ../StdFuncs/$(OBJ)/libStdFuncs.a
 	@echo Linking $@...
-	$(LD) $(OBJECTS) $(LFLAGS) -o $@.debug
+	$(LD) $(OBJECTS) $(LFLAGS) $(LIBS) -o $@.debug
 	@strip -R.comment $@.debug -o $@
 
 $(OBJ)/%.o: %.cpp
