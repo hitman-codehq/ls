@@ -69,8 +69,8 @@ void SignalHandler(int /*a_iSignal*/)
 
 static void PrintDetails(const TEntry *a_poEntry)
 {
-	unsigned Attrib, Index, Length, Bit;
-	char Date[20], Time[20], Protect[] = { 'r', 'w', 'e', 'd' };
+	unsigned Index, Length;
+	char Date[20], Time[20];
 
 	/* Print "Dir", "Link" or the file's size as appropriate */
 
@@ -97,15 +97,12 @@ static void PrintDetails(const TEntry *a_poEntry)
 		putchar(' ');
 	}
 
-	/* Iterate through the entry's attributes and print them on the screen.  Set attributes are */
-	/* indicated by their flag being 0 and cleared ones by the flag being 1 */
+	/* Determine the entry's attributes and print them on the screen */
 
-	Bit = 8;
-
-	for (Attrib = 0; Attrib < 4; ++Attrib, Bit >>= 1)
-	{
-		putchar(((a_poEntry->iAttributes & Bit) ? '-' : Protect[Attrib]));
-	}
+	putchar((a_poEntry->IsReadable()) ? 'r' : '-');
+	putchar((a_poEntry->IsWriteable()) ? 'w' : '-');
+	putchar((a_poEntry->IsExecutable()) ? 'e' : '-');
+	putchar((a_poEntry->IsDeleteable()) ? 'd' : '-');
 
 	/* Convert the entry's date and time to a string and display it */
 
