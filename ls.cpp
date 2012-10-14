@@ -106,7 +106,7 @@ static void PrintDetails(const TEntry *a_poEntry)
 
 	/* Convert the entry's date and time to a string and display it */
 
-	Utils::TimeToString(Date, Time, *a_poEntry);
+	DEBUGCHECK((Utils::TimeToString(Date, Time, *a_poEntry) != EFalse), "PrintDetails() => Utils::TimeToString() returned failure");
 	printf(" %s %s", Time, Date);
 
 	/* And finally print the name of the file itself */
