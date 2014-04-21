@@ -56,15 +56,6 @@ static bool g_bBreak;					/* Set to true if when ctrl-c is hit by the user */
 static int g_iShellHeight;				/* Height of the shell window in lines */
 static char *g_apcArgs[ARGS_NUM_ARGS];	/* Array of arguments */
 
-/* Written: Saturday 04-Jul-2009 13:11 pm */
-
-void SignalHandler(int /*a_iSignal*/)
-{
-	/* Signal that ctrl-c has been pressed so that we break out of the display routine */
-
-	g_bBreak = true;
-}
-
 /* Written: Sunday 29-Mar-2009 5:38 pm */
 
 static void PrintDetails(const TEntry *a_poEntry)
@@ -124,6 +115,15 @@ static void PrintDetails(const TEntry *a_poEntry)
 	/* And finally print the name of the file itself */
 
 	PRINT_NAME;
+}
+
+/* Written: Saturday 04-Jul-2009 13:11 pm */
+
+static void SignalHandler(int /*a_iSignal*/)
+{
+	/* Signal that ctrl-c has been pressed so that we break out of the listing routine */
+
+	g_bBreak = true;
 }
 
 /* Written: Sunday 29-Mar-2009 5:24 pm */
