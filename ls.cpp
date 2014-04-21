@@ -109,6 +109,18 @@ static void PrintDetails(const TEntry *a_poEntry)
 	DEBUGCHECK((Utils::TimeToString(Date, Time, *a_poEntry) != EFalse), "PrintDetails() => Utils::TimeToString() returned failure");
 	printf(" %s %s", Time, Date);
 
+	/* Calculate the length of the date and time that was printed */
+
+	Length = (strlen(Time) + strlen(Date) + 2);
+
+	/* And print a number of spaces after the entry's date and time, to ensure that "short" dates such as "today" */
+	/* are padded out to the correct length */
+
+	for (Index = 0; Index < (19 - Length); ++Index)
+	{
+		putchar(' ');
+	}
+
 	/* And finally print the name of the file itself */
 
 	PRINT_NAME;
