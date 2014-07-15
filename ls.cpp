@@ -133,6 +133,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 	char Char;
 	int Index, NumEntries, NumFiles, NumLines, RetVal;
 	unsigned int TotalSize;
+	enum TDirSortOrder SortOrder;
 	RDir Dir;
 	TEntryArray *DirEntries;
 
@@ -152,15 +153,26 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 		memset(g_apcArgs, 0, sizeof(g_apcArgs));
 
+		/* By default, sort alphabetically */
+
+		SortOrder = EDirSortAscending;
+
 		/* Iterate through all of the arguments passed in and find any options that we recognise. */
 		/* Anything not recognised will be treated as a path to be used, with the last one found */
 		/* being the one that is actually used */
 
 		for (Index = 1; Index < a_iArgC; ++Index)
 		{
-			if (!(stricmp(a_ppcArgV[Index], "-p")))
+			if (stricmp(a_ppcArgV[Index], "-p") == 0)
 			{
 				g_apcArgs[ARGS_PAUSE] = a_ppcArgV[Index];
+			}
+			else if (strnicmp(a_ppcArgV[Index], "-o:", 3) == 0)
+			{
+				if (strnicmp(&a_ppcArgV[Index][3], "-n", 2) == 0)
+				{
+					SortOrder = EDirSortDescending;
+				}
 			}
 			else
 			{
@@ -172,7 +184,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 		if (Dir.Open((g_apcArgs[0]) ? g_apcArgs[0] : "") == KErrNone)
 		{
-			if (Dir.Read(DirEntries) == KErrNone)
+			if (Dir.Read(DirEntries, SortOrder) == KErrNone)
 			{
 				/* Indicate success */
 
