@@ -155,7 +155,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 		/* By default, sort alphabetically */
 
-		SortOrder = EDirSortAscending;
+		SortOrder = EDirSortNameAscending;
 
 		/* Iterate through all of the arguments passed in and find any options that we recognise. */
 		/* Anything not recognised will be treated as a path to be used, with the last one found */
@@ -171,7 +171,23 @@ int main(int a_iArgC, char *a_ppcArgV[])
 			{
 				if (strnicmp(&a_ppcArgV[Index][3], "-n", 2) == 0)
 				{
-					SortOrder = EDirSortDescending;
+					SortOrder = EDirSortNameDescending;
+				}
+				else if (strnicmp(&a_ppcArgV[Index][3], "d", 2) == 0)
+				{
+					SortOrder = EDirSortDateAscending;
+				}
+				else if (strnicmp(&a_ppcArgV[Index][3], "-d", 2) == 0)
+				{
+					SortOrder = EDirSortDateDescending;
+				}
+				else if (strnicmp(&a_ppcArgV[Index][3], "s", 2) == 0)
+				{
+					SortOrder = EDirSortSizeAscending;
+				}
+				else if (strnicmp(&a_ppcArgV[Index][3], "-s", 2) == 0)
+				{
+					SortOrder = EDirSortSizeDescending;
 				}
 			}
 			else
