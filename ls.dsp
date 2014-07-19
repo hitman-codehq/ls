@@ -113,6 +113,10 @@ SOURCE=..\StdFuncs\StdList.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\StdFuncs\StdTime.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\StdFuncs\Utils.h
 # End Source File
 # End Group
