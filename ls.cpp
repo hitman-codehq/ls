@@ -163,29 +163,29 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 		for (Index = 1; Index < a_iArgC; ++Index)
 		{
-			if (stricmp(a_ppcArgV[Index], "-p") == 0)
+			if (_stricmp(a_ppcArgV[Index], "-p") == 0)
 			{
 				g_apcArgs[ARGS_PAUSE] = a_ppcArgV[Index];
 			}
-			else if (strnicmp(a_ppcArgV[Index], "-o:", 3) == 0)
+			else if (_strnicmp(a_ppcArgV[Index], "-o:", 3) == 0)
 			{
-				if (strnicmp(&a_ppcArgV[Index][3], "-n", 2) == 0)
+				if (_strnicmp(&a_ppcArgV[Index][3], "-n", 2) == 0)
 				{
 					SortOrder = EDirSortNameDescending;
 				}
-				else if (strnicmp(&a_ppcArgV[Index][3], "d", 2) == 0)
+				else if (_strnicmp(&a_ppcArgV[Index][3], "d", 2) == 0)
 				{
 					SortOrder = EDirSortDateAscending;
 				}
-				else if (strnicmp(&a_ppcArgV[Index][3], "-d", 2) == 0)
+				else if (_strnicmp(&a_ppcArgV[Index][3], "-d", 2) == 0)
 				{
 					SortOrder = EDirSortDateDescending;
 				}
-				else if (strnicmp(&a_ppcArgV[Index][3], "s", 2) == 0)
+				else if (_strnicmp(&a_ppcArgV[Index][3], "s", 2) == 0)
 				{
 					SortOrder = EDirSortSizeAscending;
 				}
-				else if (strnicmp(&a_ppcArgV[Index][3], "-s", 2) == 0)
+				else if (_strnicmp(&a_ppcArgV[Index][3], "-s", 2) == 0)
 				{
 					SortOrder = EDirSortSizeDescending;
 				}
