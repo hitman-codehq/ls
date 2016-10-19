@@ -147,7 +147,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 	/* Find out the height of the shell, for use by the -p option */
 
-	if (Utils::GetShellHeight(&g_iShellHeight))
+	if ((g_iShellHeight = Utils::GetShellHeight()) != -1)
 	{
 		/* Assume that no arguments have been passed in */
 
