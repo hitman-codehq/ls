@@ -60,7 +60,7 @@ static char *g_apcArgs[ARGS_NUM_ARGS];	/* Array of arguments */
 
 static void PrintDetails(const TEntry *a_poEntry)
 {
-	unsigned Index, Length;
+	size_t Index, Length;
 	char Date[20], Time[20];
 
 	/* Print "Dir", "Link" or the file's size as appropriate */
@@ -198,9 +198,9 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 		/* Scan the requested directory for entries */
 
-		if (Dir.Open((g_apcArgs[0]) ? g_apcArgs[0] : "") == KErrNone)
+		if (Dir.open((g_apcArgs[0]) ? g_apcArgs[0] : "") == KErrNone)
 		{
-			if (Dir.Read(DirEntries, SortOrder) == KErrNone)
+			if (Dir.read(DirEntries, SortOrder) == KErrNone)
 			{
 				/* Indicate success */
 
@@ -279,7 +279,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 				Utils::Error("Unable to read directory.");
 			}
 
-			Dir.Close();
+			Dir.close();
 		}
 		else
 		{
