@@ -36,19 +36,19 @@ static const struct Resident g_oROMTag __attribute__((used)) =
 /* Macros for printing the results in a platform independent way.  This is not particularly */
 /* nice but it's the easiest way of dealing with Amiga specific CSI codes */
 
-#ifdef __amigaos4__
+#ifdef __amigaos__
 
 #define PRINT_DIR printf("%c0;33;40mDir", 0x9b);
 #define PRINT_LINK_PREFIX printf("%c0;34;40m", 0x9b);
 #define PRINT_LINK printf("%d", a_poEntry->iSize);
-#define PRINT_NAME printf(" %s%c0;31;40m\n", a_poEntry->iName, 0x9b);
+#define PRINT_NAME printf("%s%c0;31;40m\n", a_poEntry->iName, 0x9b);
 
 #else /* ! __amigaos4__ */
 
 #define PRINT_DIR printf("Dir");
 #define PRINT_LINK_PREFIX
 #define PRINT_LINK printf("Link");
-#define PRINT_NAME printf(" %s\n", a_poEntry->iName);
+#define PRINT_NAME printf("%s\n", a_poEntry->iName);
 
 #endif /* ! __amigaos4__ */
 
@@ -60,7 +60,7 @@ static char *g_apcArgs[ARGS_NUM_ARGS];	/* Array of arguments */
 
 static void PrintDetails(const TEntry *a_poEntry)
 {
-	size_t Index, Length;
+	size_t Index, Length, Spaces;
 	char Date[20], Time[20];
 
 	/* Print "Dir", "Link" or the file's size as appropriate */
@@ -81,9 +81,11 @@ static void PrintDetails(const TEntry *a_poEntry)
 	}
 
 	/* Print a number of spaces after the entry's type or size, ensuring that we don't go into an */
-	/* infinite loop if a DivX movie is found */
+	/* infinite loop if a DivX movie or some other huge file is found */
 
-	for (Index = 0; Index < (11 - Length); ++Index)
+	Spaces = Length < 11 ? 11 - Length : 1;
+
+	for (Index = 0; Index < Spaces; ++Index)
 	{
 		putchar(' ');
 	}
@@ -103,11 +105,12 @@ static void PrintDetails(const TEntry *a_poEntry)
 	/* Calculate the length of the date and time that was printed */
 
 	Length = (strlen(Time) + strlen(Date) + 2);
+	Spaces = Length < 19 ? 19 - Length : 1;
 
 	/* And print a number of spaces after the entry's date and time, to ensure that "short" dates such as "today" */
 	/* are padded out to the correct length */
 
-	for (Index = 0; Index < (19 - Length); ++Index)
+	for (Index = 0; Index < Spaces; ++Index)
 	{
 		putchar(' ');
 	}
