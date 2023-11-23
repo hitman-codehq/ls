@@ -40,7 +40,7 @@ static const struct Resident g_oROMTag __attribute__((used)) =
 
 #define PRINT_DIR printf("%c0;33;40mDir", 0x9b);
 #define PRINT_LINK_PREFIX printf("%c0;34;40m", 0x9b);
-#define PRINT_LINK printf("%d", a_poEntry->iSize);
+#define PRINT_LINK printf("%d", (int) a_poEntry->iSize);
 #define PRINT_NAME printf("%s%c0;31;40m\n", a_poEntry->iName, 0x9b);
 
 #else /* ! __amigaos4__ */
@@ -77,7 +77,19 @@ static void PrintDetails(const TEntry *a_poEntry)
 	}
 	else
 	{
-		Length = printf("%d", a_poEntry->iSize);
+		/* Amiga OS has no support for the %lld format specifier, so we have no choice but to just */
+		/* cast the 64 bit value to an integer and hope for the best */
+
+#ifdef __amigaos__
+
+		Length = printf("%d", (int) a_poEntry->iSize);
+
+#else /* ! __amigaos__ */
+
+		Length = printf("%lld", a_poEntry->iSize);
+
+#endif /* ! __amigaos__ */
+
 	}
 
 	/* Print a number of spaces after the entry's type or size, ensuring that we don't go into an */
@@ -135,7 +147,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 {
 	char Char;
 	int Index, NumEntries, NumFiles, NumLines, RetVal;
-	unsigned int TotalSize;
+	TInt64 TotalSize;
 	enum TDirSortOrder SortOrder;
 	RDir Dir;
 	TEntryArray *DirEntries;
@@ -212,8 +224,9 @@ int main(int a_iArgC, char *a_ppcArgV[])
 				/* Loop around and display the entries in the directory, keeping track of the */
 				/* # of files found and their total size */
 
-				NumFiles = NumLines = TotalSize = 0;
+				NumFiles = NumLines = 0;
 				NumEntries = DirEntries->Count();
+				TotalSize = 0;
 
 				for (Index = 0; Index < NumEntries; ++Index)
 				{
@@ -274,7 +287,19 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 				if (Index == NumEntries)
 				{
-					printf("%d Files - %d bytes used Bro!\n", NumFiles, TotalSize);
+					/* Amiga OS has no support for the %lld format specifier, so we have no choice but to just */
+					/* cast the 64 bit value to an integer and hope for the best */
+
+#ifdef __amigaos__
+
+					printf("%d Files - %d bytes used Bro!\n", NumFiles, (int) TotalSize);
+
+#else /* ! __amigaos__ */
+
+					printf("%d Files - %lld bytes used Bro!\n", NumFiles, TotalSize);
+
+#endif /* ! __amigaos__ */
+
 				}
 			}
 			else
