@@ -61,7 +61,7 @@ static char *g_apcArgs[ARGS_NUM_ARGS];	/* Array of arguments */
 static void PrintDetails(const TEntry *a_poEntry)
 {
 	size_t Index, Length, Spaces;
-	char Date[20], Time[20];
+	std::string Date, Time;
 
 	/* Print "Dir", "Link" or the file's size as appropriate */
 
@@ -112,11 +112,11 @@ static void PrintDetails(const TEntry *a_poEntry)
 	/* Convert the entry's date and time to a string and display it */
 
 	DEBUGCHECK((Utils::TimeToString(Date, Time, *a_poEntry) != EFalse), "PrintDetails() => Utils::TimeToString() returned failure");
-	printf(" %s %s", Time, Date);
+	printf(" %s %s", Time.c_str(), Date.c_str());
 
 	/* Calculate the length of the date and time that was printed */
 
-	Length = (strlen(Time) + strlen(Date) + 2);
+	Length = (Time.length() + Date.length() + 2);
 	Spaces = Length < 19 ? 19 - Length : 1;
 
 	/* And print a number of spaces after the entry's date and time, to ensure that "short" dates such as "today" */
