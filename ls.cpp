@@ -117,7 +117,7 @@ static void PrintDetails(const TEntry *a_poEntry)
 	/* Calculate the length of the date and time that was printed */
 
 	Length = (Time.length() + Date.length() + 2);
-	Spaces = Length < 19 ? 19 - Length : 1;
+	Spaces = Length < 20 ? 20 - Length : 1;
 
 	/* And print a number of spaces after the entry's date and time, to ensure that "short" dates such as "today" */
 	/* are padded out to the correct length */
