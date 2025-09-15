@@ -150,7 +150,6 @@ int main(int a_iArgC, char *a_ppcArgV[])
 	TInt64 TotalSize;
 	enum TDirSortOrder SortOrder;
 	RDir Dir;
-	TEntryArray *DirEntries;
 
 	/* Assume failure */
 
@@ -215,8 +214,10 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 		if (Dir.open((g_apcArgs[0]) ? g_apcArgs[0] : "") == KErrNone)
 		{
-			if (Dir.read(DirEntries, SortOrder) == KErrNone)
+			if (Dir.read(SortOrder) == KErrNone)
 			{
+				TEntryArray &DirEntries = *Dir.getEntries();
+
 				/* Indicate success */
 
 				RetVal = RETURN_OK;
@@ -225,21 +226,21 @@ int main(int a_iArgC, char *a_ppcArgV[])
 				/* # of files found and their total size */
 
 				NumFiles = NumLines = 0;
-				NumEntries = DirEntries->Count();
+				NumEntries = DirEntries.Count();
 				TotalSize = 0;
 
 				for (Index = 0; Index < NumEntries; ++Index)
 				{
-					PrintDetails(&(*DirEntries)[Index]);
+					PrintDetails(&DirEntries[Index]);
 					++NumFiles;
 					++NumLines;
 
 					/* Only add the size of this is not a directory, as the value of TEntry::iSize */
 					/* is undefined for directories */
 
-					if (!((*DirEntries)[Index].IsDir()))
+					if (!(DirEntries[Index].IsDir()))
 					{
-						TotalSize += (*DirEntries)[Index].iSize;
+						TotalSize += DirEntries[Index].iSize;
 					}
 
 					/* If the user has requested to pause between screens and we are displaying the */
