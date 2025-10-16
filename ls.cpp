@@ -2,8 +2,6 @@
 #include <StdFuncs.h>
 #include <Args.h>
 #include <Dir.h>
-#include <ctype.h>
-#include <signal.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -52,7 +50,6 @@ static const struct Resident g_oROMTag __attribute__((used)) =
 
 #endif /* ! __amigaos4__ */
 
-static bool g_bBreak;					/* Set to true if when ctrl-c is hit by the user */
 static int g_iShellHeight;				/* Height of the shell window in lines */
 static char *g_apcArgs[ARGS_NUM_ARGS];	/* Array of arguments */
 
@@ -132,15 +129,6 @@ static void PrintDetails(const TEntry *a_poEntry)
 	PRINT_NAME;
 }
 
-/* Written: Saturday 04-Jul-2009 13:11 pm */
-
-static void SignalHandler(int /*a_iSignal*/)
-{
-	/* Signal that ctrl-c has been pressed so that we break out of the listing routine */
-
-	g_bBreak = true;
-}
-
 /* Written: Sunday 29-Mar-2009 5:24 pm */
 
 int main(int a_iArgC, char *a_ppcArgV[])
@@ -157,7 +145,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 	/* First off, install a ctrl-c handler */
 
-	signal(SIGINT, SignalHandler);
+	Utils::setSignal();
 
 	/* Find out the height of the shell, for use by the -p option */
 
@@ -276,7 +264,7 @@ int main(int a_iArgC, char *a_ppcArgV[])
 
 					/* Check to see if ctrl-c was pressed and if so, break out of the loop */
 
-					if (g_bBreak)
+					if (g_break)
 					{
 						printf("LS: ***Break\n");
 
